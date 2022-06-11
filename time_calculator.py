@@ -1,10 +1,11 @@
 
 def add_time(start, end, day=""):
-    day = day.casefold().title()
+    day = str(day).casefold().title()
 
     # ****Define AM or PM******
     x = ''
-    period = ["AM", "PM"]
+    Days = [" Monday", " Tuesday", " Wednesday",
+            " Thursday", " Friday", " Saturday", " Sunday"]
     timeS = str(start).split(":")
     S_hour = int(timeS[0])
     P = timeS[1].split()
@@ -23,26 +24,49 @@ def add_time(start, end, day=""):
         Res_Min = Res_Min - 60
         Res_H += 1
 
+    # ****** days later *****
+    if (Res_H / 24).is_integer():
+        tmp = Res_H / 24
+    else:
+        tmp = int(Res_H / 24) + 1
+
+    dayIndice = 0
     while Res_H > 12:
-
         Res_H = Res_H - 12
+        dayIndice += 1
         if PeriodS == 'PM':
-            PeriodS = 'AM,'
-
+            PeriodS = 'AM'
         else:
-            PeriodS = 'PM,'
+            PeriodS = 'PM'
 
-        cpt = cpt + 1
-        if cpt == 1:
-            x = "(next day)"
-        if cpt >= 2:
-            x = "(" + str(cpt/2) + " Days Later)"
+        # ****Time Later***** error with same days
 
-    NewTime = str(Res_H).zfill(2)+":"+str(Res_Min).zfill(2)
+        if tmp == 1:
+            x = " (next day)"
+        if tmp >= 2:
+            x = " (" + str(tmp) + " Days Later)"
 
-    print(NewTime + " " + PeriodS + x, day)
+    if Res_H == 12 and PeriodS == 'AM':
+        PeriodS = 'PM'
+    elif Res_H == 12 and PeriodS == 'PM':
+        PeriodS = 'AM'
+
+    NewTime = str(Res_H) + ":"+str(Res_Min).zfill(2)
+    # **** Adding Comma****
+    if len(day) != 0:
+        day = ", " + day
+
+    print(NewTime + " " + PeriodS, end="")
+
+    DaysLater = E_hour % 7
+    if day != "":
+        if dayIndice >= 2:
+            print("," + Days[DaysLater], end='')
+
+        elif dayIndice == 1 and P[1] == "AM":
+            print(day, end="")
+    # if dayIndice >= 2:
+    print(x, end='')
 
 
-add_time("6:30 PM", "205:12")
-
-# Error case 3 & 6
+add_time("3:30 PM", "2:12")

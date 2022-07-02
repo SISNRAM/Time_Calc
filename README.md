@@ -2,4 +2,4 @@
 
 # Code for the FreeCodeCamp certificat 'Scientific Computing with Python'
 
-# This is the first project 'Time Calculator'
+# This is the second project 'Time Calculator'
